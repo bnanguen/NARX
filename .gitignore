@@ -1,0 +1,26 @@
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# notebooks
+.ipynb_checkpoints/
+
+# virtualenvs / envs
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editor
+.vscode/
+.idea/
+*.swp
+
+# misc artefacts
+*.log
+.coverage
