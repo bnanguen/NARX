@@ -72,3 +72,20 @@ def independent_matrix(Y, U, d, na, nb, sigma_y=0.0, rng=None):
         targets.append(Y[k + 1])
 
     return np.asarray(rows, dtype=np.float64), np.asarray(targets, dtype=np.float64)
+
+
+def feature_names(d, na, nb, n_out=2, n_in=2):
+    """Column labels matching `independent_matrix`'s feature order."""
+    names = []
+    for j in range(n_out):
+        for lag in range(d, d + na + 1):
+            names.append(f"y{j + 1}(k-{lag})")
+    for j in range(n_in):
+        for lag in range(0, nb + 1):
+            names.append(f"u{j + 1}(k-{lag})")
+    return names
+
+
+def n_features(d, na, nb, n_out=2, n_in=2):
+    """How many features `independent_matrix` produces for the given orders."""
+    return n_out * (na + 1) + n_in * (nb + 1)
