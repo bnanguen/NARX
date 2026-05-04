@@ -20,7 +20,3 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
-
-# misc artefacts
-*.log
-.coverage
