@@ -12,7 +12,7 @@ def rmse(y_true, y_hat):
     Matches eq. (4) of the brief.
     """
     y_true = np.asarray(y_true, dtype=np.float64)
-    y_hat  = np.asarray(y_hat,  dtype=np.float64)
+    y_hat = np.asarray(y_hat, dtype=np.float64)
     return float(np.sqrt(np.mean((y_true - y_hat) ** 2)))
 
 
@@ -25,7 +25,7 @@ def nmse(y_true, y_hat):
     where ybar_j is the per-output mean. Matches eq. (5) of the brief.
     """
     y_true = np.asarray(y_true, dtype=np.float64)
-    y_hat  = np.asarray(y_hat,  dtype=np.float64)
+    y_hat = np.asarray(y_hat, dtype=np.float64)
     num = np.sum((y_true - y_hat) ** 2)
     denom = np.sum((y_true - y_true.mean(axis=0, keepdims=True)) ** 2)
     return float(num / (denom + 1e-12))
