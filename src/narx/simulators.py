@@ -97,3 +97,7 @@ def simulate_narx2(N_train, N_test, sigma=0.01, seed=7):
 
 # Reading off eq. (6): y reaches back to lag 2 (d=0, na=2) and u to lag 1 (nb=1).
 NARX2_TRUE_PARAMS = dict(d=0, na=2, nb=1)
+
+# Note: when we run the 2a grid on NARX2 it actually lands on (1, 1, 0).
+# The rational form is close to linear in the |y| < 0.5 regime so the
+# proxies prefer the smaller triple. Documented in the notebook.
