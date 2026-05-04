@@ -1,6 +1,6 @@
 # Task 2a: pick (d, na, nb) by multi-proxy CV-NMSE majority vote.
 # Five proxies cover different inductive biases (boosting, bagging,
-# ExtraTrees, XGBoost, plus a Ridge on a sin/x^2/x^3/pairwise expansion).
+# ExtraTrees, XGBoost deep, XGBoost shallow).
 # CV uses TimeSeriesSplit, series-parallel mode (phi from observed y).
 
 import itertools
@@ -9,45 +9,18 @@ from collections import Counter
 import numpy as np
 import matplotlib.pyplot as plt
 
-from sklearn.base import BaseEstimator, RegressorMixin, clone
-from sklearn.linear_model import Ridge
+from sklearn.base import clone
 from sklearn.ensemble import (
     GradientBoostingRegressor,
     RandomForestRegressor,
     ExtraTreesRegressor,
 )
 from sklearn.model_selection import TimeSeriesSplit
-from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBRegressor
 
 from .features import independent_matrix
 from .metrics import nmse
-
-
-class NARXFeatureRidge(BaseEstimator, RegressorMixin):
-    "Ridge on [X, sin(X), X^2, X^3, pairwise products]. Smooth proxy."
-
-    def __init__(self, alpha=1e-6):
-        self.alpha = alpha
-
-    def _expand(self, X):
-        feats = [X, np.sin(X), X**2, X**3]
-        n = X.shape[1]
-        for i in range(n):
-            for j in range(i, n):
-                feats.append((X[:, i] * X[:, j]).reshape(-1, 1))
-        return np.hstack(feats)
-
-    def fit(self, X, y):
-        self.model_ = Pipeline(
-            [("sc", StandardScaler()), ("rg", Ridge(alpha=self.alpha))]
-        )
-        self.model_.fit(self._expand(X), y)
-        return self
-
-    def predict(self, X):
-        return self.model_.predict(self._expand(X))
 
 
 PROXY_MODELS = {
@@ -60,7 +33,6 @@ PROXY_MODELS = {
     "ExtraTrees": ExtraTreesRegressor(
         n_estimators=100, max_depth=6, min_samples_leaf=3, random_state=0, n_jobs=-1
     ),
-    "FeatureRidge": NARXFeatureRidge(alpha=1e-6),
     "XGBoost": XGBRegressor(
         n_estimators=100,
         max_depth=5,
@@ -69,6 +41,17 @@ PROXY_MODELS = {
         colsample_bytree=0.8,
         tree_method="hist",
         random_state=42,
+        verbosity=0,
+        n_jobs=-1,
+    ),
+    "XGBoost_shallow": XGBRegressor(
+        n_estimators=100,
+        max_depth=3,
+        learning_rate=0.1,
+        subsample=0.8,
+        colsample_bytree=0.8,
+        tree_method="hist",
+        random_state=0,
         verbosity=0,
         n_jobs=-1,
     ),
