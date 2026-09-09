@@ -1,10 +1,48 @@
+# NARX: Nonlinear AutoRegressive Model with Exogenous Inputs
 
-# INFO-F-422 NARX project
+## Overview
 
-Statistical Foundations of Machine Learning · ULB · 2025-2026
-Project notebook, 
+This project explores the implementation and application of a **NARX (Nonlinear AutoRegressive with Exogenous Inputs)** model for time series forecasting.
 
-team 37.
+NARX models extend traditional autoregressive approaches by incorporating both:
+
+- Past values of the target variable (autoregressive component)
+- External input variables (exogenous component)
+
+This makes them particularly suitable for modeling complex nonlinear dynamic systems where external factors influence future observations.
+
+---
+
+## Objectives
+
+The main goals of this project are:
+
+- Build a NARX-based forecasting framework
+- Process and prepare time series data
+- Train and evaluate predictive models
+- Compare forecasting performance
+- Analyze the impact of exogenous variables on prediction accuracy
+
+---
+
+## Project Structure
+
+```text
+NARX/
+│
+├── notebooks/
+│   └── main.ipynb
+│
+├── data/
+│   └── ...
+│
+├── models/
+│   └── ...
+│
+├── results/
+│   └── ...
+│
+└── README.md
 
 Please make sure to install the requirements in `requirements.txt`
 
